@@ -1,9 +1,10 @@
 #! /usr/bin/env python3
 import random
 import numpy as np
-import sys
-sys.path.append('.')
 import zizi_computers as cpu
+from zizi_record import Record
+import pandas as pd
+import numpy as np
 
 marks = ["S", "H", "C", "D"]
 
@@ -127,6 +128,7 @@ def newJudge(turn_player, drawn_card):
             ages[x] = None #agesに揃ったことを意味するNoneを代入
             ages[drawn_card] = None
             opensource = opensource + [x]+ [drawn_card]
+            record.update_record_paired(turn,drawn_card,x)
             flug = True
     for i, x in enumerate(drawns[turn_player]):
         if x%13 == drawn_card_num:  #もし引き札で揃ったら
@@ -136,10 +138,12 @@ def newJudge(turn_player, drawn_card):
             ages[x] = None #agesに揃ったことを意味するNoneを代入
             ages[drawn_card] = None
             opensource = opensource + [x]+ [drawn_card]
+            record.update_record_paired(turn,drawn_card,x)
             flug = True
     if flug == False:
         drawns[turn_player].append(drawn_card)
         places[drawn_card] = turn_player
+        record.update_record_unpaired(turn,drawn_card,turn_player,originals[turn_player] + drawns[turn_player])
     return flug
 
 def draw(turn_player, drawn_player):
@@ -220,11 +224,12 @@ for game in range(games):
                     places[card_num + 13 * j] = None
 
 
-
     #各プレイヤーの手札をシャッフル
     for i in range(0,4):
         random.shuffle(originals[i])
 
+    #recordを初期化
+    record = Record(originals)
 
     #ゲーム開始の時点で、places = Noneのカード、つまりそろっているカードのageをNoneにする。
     for i in range(1, len(places)):
@@ -252,6 +257,7 @@ for game in range(games):
     previous_turn_num = 0
     #age_increase = False
 
+    record.show()
     while loser_exist == False:
 
         turn_player = turn%4
@@ -351,7 +357,7 @@ for game in range(games):
                     break
 
     #        print(opensource)
-
+        record.show()
 
     #ターンの最後
 
@@ -372,4 +378,5 @@ for game in range(games):
             pass
     #print('\n')
 print(winnerList)
+
 #print(" ")
