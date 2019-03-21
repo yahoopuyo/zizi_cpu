@@ -67,8 +67,8 @@ zizikaku2_lst = [[None, None, None, None], [None, None, None, None], [None, None
 zizikaku_used = [0,0,0,0]
 
 
-com_player_nums = [0,1,2,3]  #毎回このファイルを実行するときに、comのプレイヤーが何番か記入すること。
-com_player_pattern = [2,0,1,2 ]  #com_player_numsになってるインデックスに、そのcomのパターンを記入すること。
+com_player_nums = [1,2,3]  #毎回このファイルを実行するときに、comのプレイヤーが何番か記入すること。
+com_player_pattern = [None,0,1,2 ]  #com_player_numsになってるインデックスに、そのcomのパターンを記入すること。
 #パターン０がとにかくオリジナルから引く。
 #パターン１がとにかく引き札から引く。
 #パターン２が完全ランダムで引く。
@@ -723,6 +723,8 @@ while loser_exist == False:
     history[turn][0] = turn
     history[turn][1] = turn_player
 
+    time.sleep(10)
+
 
 
 
@@ -759,6 +761,7 @@ while loser_exist == False:
                 print("ビリが確定しました")
                 print(" ")
                 break
+        time.sleep(10)
 
     else:   #もし、先のターンの人が上がってなかったら、次に順番が回ってきた人は、先のターンの人から一枚引き抜き、
         drawn_player = turn%4
@@ -819,6 +822,7 @@ while loser_exist == False:
             if places[i] != history_of_places[0][i] and ages[i] == 0:   #これまで0歳だったのに、このターンでplacesが変わったカードについて。
                 ages[i] = 1   #誕生したことを示す、1。
 
+        time.sleep(10)
 
         previous_turn_num = turn
         history_of_places[turn] = places[:]
